@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>Luna Chat</title>
+<style>
+body{background:#000;color:#fff;font-family:system-ui;padding:20px;max-width:700px;margin:auto}
+#chat{height:60vh;overflow:auto;border:1px solid #222;padding:12px;border-radius:12px;margin:12px 0;background:#0a0a0a}
+.row{margin:8px 0}
+input{width:70%;padding:12px;background:#111;color:#fff;border:1px solid #333;border-radius:10px}
+button{padding:12px 18px;background:#fff;color:#000;border:none;border-radius:10px}
+</style>
+</head>
+<body>
+<h2>💬 Luna Chat - بتاعي</h2>
+<div id="chat"></div>
+<input id="msg" placeholder="اكتب رسالتك...">
+<button onclick="send()">ابعت</button>
+<script>
+async function send(){
+  const text=document.getElementById('msg').value;
+  if(!text) return;
+  const chat=document.getElementById('chat');
+  chat.innerHTML+=`<div>انت: ${text}</div>`;
+  document.getElementById('msg').value='';
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text})});
+  const data=await r.json();
+  chat.innerHTML+=`<div>Luna: ${data.reply}</div>`;
+}
+</script>
+</body>
+</html>
